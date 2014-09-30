@@ -1,8 +1,4 @@
-NeatoHorde
-==========
-
-All the neatos!!!
-Scalable multiagent robotics project.
+1. Scalable multiagent robotics project.
 
 Ideas:
 	-Synchronize movement to account for differences in each robot; formations
