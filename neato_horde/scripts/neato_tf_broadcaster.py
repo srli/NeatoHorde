@@ -6,7 +6,7 @@ from geometry_msgs.msg import Pose
 def handle_neato_pose(msg, neato_name):
 	"""Helper method to handle the neato robot's pose"""
 	br = tf.TransformBroadcaster()
-	br.sendTransform((msg.x, msg.y, 0)),
+	br.sendTransform((msg.x, msg.y, 0),
 						tf.transformations.quaternion_from_euler(0.0, 0.0, msg.theta),
 						rospy.Time.now(),
 						neato_name,
