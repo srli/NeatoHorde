@@ -92,7 +92,7 @@ def teleop():
         else:
             m = Twist()
 
-        pub.publish(m)
+        # pub.publish(m)
         pub2.publish(m)
 	pub3.publish(m)
 	pub4.publish(m)
