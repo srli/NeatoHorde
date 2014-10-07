@@ -1,12 +1,6 @@
 digraph G {
-"bigbird/base_link" -> "bigbird/base_laser_link"[label="Broadcaster: /bigbird/laser_to_base\nAverage rate: 20.148 Hz\nMost recent transform: 1412467090.491 \nBuffer length: 4.914 sec\n"];
-"bigbird/odom" -> "bigbird/base_link"[label="Broadcaster: /bigbird/neato\nAverage rate: 5.216 Hz\nMost recent transform: 1412467090.372 \nBuffer length: 4.793 sec\n"];
-"snuffle/base_link" -> "snuffle/base_laser_link"[label="Broadcaster: /snuffle/laser_to_base\nAverage rate: 20.149 Hz\nMost recent transform: 1412467090.451 \nBuffer length: 4.864 sec\n"];
-"ernie/base_link" -> "ernie/base_laser_link"[label="Broadcaster: /ernie/laser_to_base\nAverage rate: 20.150 Hz\nMost recent transform: 1412467090.455 \nBuffer length: 4.864 sec\n"];
-"bert/base_link" -> "bert/base_laser_link"[label="Broadcaster: /bert/laser_to_base\nAverage rate: 20.150 Hz\nMost recent transform: 1412467090.463 \nBuffer length: 4.863 sec\n"];
-"bert/odom" -> "bert/base_link"[label="Broadcaster: /bert/neato\nAverage rate: 5.220 Hz\nMost recent transform: 1412467090.241 \nBuffer length: 4.598 sec\n"];
-"grover/base_link" -> "grover/base_laser_link"[label="Broadcaster: /grover/laser_to_base\nAverage rate: 20.155 Hz\nMost recent transform: 1412467090.464 \nBuffer length: 4.862 sec\n"];
-"oscar/base_link" -> "oscar/base_laser_link"[label="Broadcaster: /oscar/laser_to_base\nAverage rate: 20.154 Hz\nMost recent transform: 1412467090.465 \nBuffer length: 4.863 sec\n"];
-"elmo/base_link" -> "elmo/base_laser_link"[label="Broadcaster: /elmo/laser_to_base\nAverage rate: 20.160 Hz\nMost recent transform: 1412467090.465 \nBuffer length: 4.861 sec\n"];
-"cookie_monster/base_link" -> "cookie_monster/base_laser_link"[label="Broadcaster: /cookie_monster/laser_to_base\nAverage rate: 20.148 Hz\nMost recent transform: 1412467090.480 \nBuffer length: 4.864 sec\n"];
+"oscar/base_link" -> "oscar/base_laser_link"[label="Broadcaster: /oscar/laser_to_base\nAverage rate: 20.126 Hz\nMost recent transform: 1412708079.664 \nBuffer length: 4.919 sec\n"];
+"oscar/odom" -> "oscar/base_link"[label="Broadcaster: /oscar/neato\nAverage rate: 3.168 Hz\nMost recent transform: 1412708079.417 \nBuffer length: 4.735 sec\n"];
+"bigbird/base_link" -> "bigbird/base_laser_link"[label="Broadcaster: /bigbird/laser_to_base\nAverage rate: 20.120 Hz\nMost recent transform: 1412708079.664 \nBuffer length: 4.871 sec\n"];
+"bigbird/odom" -> "bigbird/base_link"[label="Broadcaster: /bigbird/neato\nAverage rate: 4.771 Hz\nMost recent transform: 1412708079.367 \nBuffer length: 0.838 sec\n"];
 }

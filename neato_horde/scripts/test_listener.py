@@ -7,6 +7,7 @@ import geometry_msgs.msg
 
 if __name__ == '__main__':
     rospy.init_node('tf_neato')
+    print('TEST_LISTENER RUNNING')
 
     listener = tf.TransformListener()
 
@@ -36,6 +37,7 @@ if __name__ == '__main__':
         follower_vel.publish(cmd)
 
         rate.sleep()
+    cmd = geometry_msgs.msg.Twist()
     cmd.linear.x = 0
     cmd.angular.z = 0
     follower_vel.publish(cmd)

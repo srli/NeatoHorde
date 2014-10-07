@@ -20,7 +20,7 @@ def handle_turtle_pose(msg, neato_name):
     br.sendTransform((msg.pose.pose.position.x + offset, msg.pose.pose.position.y, msg.pose.pose.position.z),
                      tf.transformations.quaternion_from_euler(0, 0, msg.pose.pose.orientation.z),
                      rospy.Time.now(),
-                     neato_name,
+                     '{}/odom'.format(neato_name),
                      "world")
     
 
@@ -28,6 +28,7 @@ def handle_turtle_pose(msg, neato_name):
 if __name__ == '__main__':
     neatos = ['oscar', 'bigbird']
     rospy.init_node('turtle_tf_broadcaster')
+    print('TEST_BROADCASTER RUNNING')
     #turtlename = rospy.get_param('~turtle')
     for neato in neatos:
         #print '/%s/odom' % neato
