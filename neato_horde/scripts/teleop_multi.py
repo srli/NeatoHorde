@@ -53,8 +53,8 @@ def getch():
 
 
 def teleop():
-    pub = rospy.Publisher('/oscar/cmd_vel', Twist, queue_size=10)
-    pub2 = rospy.Publisher('/bigbird/cmd_vel', Twist, queue_size=10)
+    pub = rospy.Publisher('/bigbird/cmd_vel', Twist, queue_size=10)
+    pub2 = rospy.Publisher('/oscar/cmd_vel', Twist, queue_size=10)
     pub3 = rospy.Publisher('/elmo/cmd_vel', Twist, queue_size=10)
     pub4 = rospy.Publisher('/ernie/cmd_vel', Twist, queue_size=10)
     pub5 = rospy.Publisher('/bert/cmd_vel', Twist, queue_size=10)
