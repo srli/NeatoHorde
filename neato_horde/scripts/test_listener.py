@@ -11,7 +11,7 @@ if __name__ == '__main__':
 
     listener = tf.TransformListener()
 
-    follower_vel = rospy.Publisher('bigbird/cmd', geometry_msgs.msg.Twist)
+    follower_vel = rospy.Publisher('bigbird/cmd_vel', geometry_msgs.msg.Twist)
 
     rate = rospy.Rate(10.0)
     while not rospy.is_shutdown():
