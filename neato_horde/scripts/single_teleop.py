@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-import roslib; roslib.load_manifest('teleop_twist_keyboard')
+#import roslib; roslib.load_manifest('teleop_twist_keyboard')
 import rospy
 
 from geometry_msgs.msg import Twist
@@ -58,7 +58,7 @@ def vels(speed,turn):
 if __name__=="__main__":
     	settings = termios.tcgetattr(sys.stdin)
 	
-	pub = rospy.Publisher('/oscar/cmd_vel', Twist, queue_size=10)
+	pub = rospy.Publisher('/leader/cmd_vel', Twist, queue_size=10)
 	rospy.init_node('teleop_twist_keyboard',anonymous=True)
 
 	x = 0

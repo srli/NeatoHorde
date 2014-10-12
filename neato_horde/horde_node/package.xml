@@ -1,11 +1,11 @@
 <package>
-  <name>neato_node</name>
-  <version>0.2.0</version>
+  <name>horde_node</name>
+  <version>0.1.0</version>
   <description>
-    A node wrapper for the neato_driver package
+    A node wrapper for the neato_horde package, modified from neato_node wrapper
   </description>
-  <author>Michael Ferguson</author>
-  <maintainer email="ferguson@cs.albany.edu">Michael Ferguson</maintainer>
+  <author>cfong</author>
+  <maintainer email="cfong355@gmail.com">cfong</maintainer>
   <license>BSD</license>
   <url>http://ros.org/wiki/neato_node</url>
   

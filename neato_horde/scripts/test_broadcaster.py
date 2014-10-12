@@ -17,7 +17,7 @@ def handle_turtle_pose(msg, neato_name):
     if neato_name == 'bigbird':
         offset = 3
     br = tf.TransformBroadcaster()
-    br.sendTransform((msg.pose.pose.position.x + offset, msg.pose.pose.position.y, msg.pose.pose.position.z),
+    br.sendTransform((msg.pose.pose.position.x, msg.pose.pose.position.y, msg.pose.pose.position.z),
                      tf.transformations.quaternion_from_euler(0, 0, msg.pose.pose.orientation.z),
                      rospy.Time.now(),
                      '{}/odom'.format(neato_name),
