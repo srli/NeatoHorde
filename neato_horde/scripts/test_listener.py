@@ -16,16 +16,15 @@ if __name__ == '__main__':
     rate = rospy.Rate(10.0)
     while not rospy.is_shutdown():
         try:
-            (trans,rot) = listener.lookupTransform('/bigbird/odom', '/oscar/odom', rospy.Time(0))
+            (trans,rot) = listener.lookupTransform('/bigbird/odom/', '/oscar/odom/', rospy.Time(0))
         except (tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException):
             continue
 
         print('Translation', trans)
         print('Rotational:', rot)
 
-
         x_trans = trans[0]
-        if x_trans > 0:
+        if x_trans = 0:
             linear = 0.2*x_trans
         else:
             linear = -0.2*x_trans
