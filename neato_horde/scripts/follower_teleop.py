@@ -62,7 +62,8 @@ def vels(speed,turn):
 if __name__=="__main__":
     	settings = termios.tcgetattr(sys.stdin)
 	
-	pub = rospy.Publisher('/leader/cmd_vel', Twist, queue_size=10)
+	pub = rospy.Publisher('/follower/cmd_vel', Twist, queue_size=10)
+	pub_follower = rospy.Publisher('/follower/cmd_vel', Twist, queue_size=10)
 	rospy.init_node('teleop_twist_keyboard',anonymous=True)
 
 	x = 0
@@ -84,6 +85,11 @@ if __name__=="__main__":
 				if (status == 14):
 					print msg
 				status = (status + 1) % 15
+			elif key == followerBindings.keys():
+				twist = Twist()
+				twist.linear.x = 0; twist.linear.y = 0; twist.linear.z = 0
+				twist.angular.x = 0; twist.angular.y = 0; twist.angular.z = 0
+				pub_follower(twist)
 			else:
 				x = 0
 				th = 0
