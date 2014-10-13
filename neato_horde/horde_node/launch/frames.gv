@@ -1,7 +1,8 @@
 digraph G {
-"follower/base_link" -> "follower/base_laser_link"[label="Broadcaster: /follower/laser_to_base\nAverage rate: 20.172 Hz\nMost recent transform: 1413176306.081 \nBuffer length: 4.957 sec\n"];
-"world" -> "follower/odom"[label="Broadcaster: /follower/odom_to_world\nAverage rate: 20.172 Hz\nMost recent transform: 1413176306.084 \nBuffer length: 4.957 sec\n"];
-"world" -> "leader/odom"[label="Broadcaster: /leader/odom_to_world\nAverage rate: 20.168 Hz\nMost recent transform: 1413176306.058 \nBuffer length: 4.909 sec\n"];
-"leader/base_link" -> "leader/base_laser_link"[label="Broadcaster: /leader/laser_to_base\nAverage rate: 20.174 Hz\nMost recent transform: 1413176306.058 \nBuffer length: 4.907 sec\n"];
-"leader/odom" -> "leader/base_link"[label="Broadcaster: /leader/neato\nAverage rate: 5.219 Hz\nMost recent transform: 1413176305.741 \nBuffer length: 4.599 sec\n"];
+"world" -> "leader/odom"[label="Broadcaster: /leader/odom_to_world\nAverage rate: 20.146 Hz\nMost recent transform: 1413179476.827 \nBuffer length: 4.914 sec\n"];
+"leader/base_link" -> "leader/base_laser_link"[label="Broadcaster: /leader/laser_to_base\nAverage rate: 20.148 Hz\nMost recent transform: 1413179476.830 \nBuffer length: 4.914 sec\n"];
+"leader/odom" -> "leader/base_link"[label="Broadcaster: /leader/neato\nAverage rate: 5.207 Hz\nMost recent transform: 1413179476.614 \nBuffer length: 4.801 sec\n"];
+"follower/base_link" -> "follower/base_laser_link"[label="Broadcaster: /follower/laser_to_base\nAverage rate: 20.146 Hz\nMost recent transform: 1413179476.841 \nBuffer length: 4.914 sec\n"];
+"follower/odom" -> "follower/base_link"[label="Broadcaster: /follower/neato\nAverage rate: 5.221 Hz\nMost recent transform: 1413179476.499 \nBuffer length: 4.597 sec\n"];
+"world" -> "follower/odom"[label="Broadcaster: /follower/odom_to_world\nAverage rate: 20.144 Hz\nMost recent transform: 1413179476.842 \nBuffer length: 4.915 sec\n"];
 }

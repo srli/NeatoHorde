@@ -5,6 +5,7 @@ import tf
 from std_msgs.msg import Header
 from nav_msgs.msg import Odometry
 from geometry_msgs.msg import PoseStamped, Pose, Twist
+from tf.transformations import euler_from_quaternion
 import math
 
 class Robot:
@@ -41,11 +42,11 @@ class Robot:
 		############################################################################################################################
 		# I suspect that this broadcaster isn't actually necessary, since we declare the odom -> world transforms in the launch -- but who knows
 		############################################################################################################################
-		self.tf_broadcaster.sendTransform((self.x, self.y, msg.pose.pose.position.z),
-                     tf.transformations.quaternion_from_euler(0, 0, msg.pose.pose.orientation.z),
-                     rospy.Time.now(),
-                     '{}/odom'.format(self.name),
-                     '/world') 
+		# self.tf_broadcaster.sendTransform((self.x, self.y, msg.pose.pose.position.z),
+  #                    tf.transformations.quaternion_from_euler(0, 0, msg.pose.pose.orientation.z),
+  #                    rospy.Time.now(),
+  #                    '{}/odom'.format(self.name),
+  #                    '/world') 
 
 	def listen_to_pose(self):
 		"""Listens to transform between /world and /base_link"""
@@ -66,11 +67,12 @@ class Robot:
 		print("==============================")
 
 	def scrubinputs(self, trans, rot):
-		translation_x = -1 - trans[0]
+		translation_x = -0.9 - trans[0]
 		translation_y = trans[1]
 		translation_z = trans[2]
-		rotation_1 = rot[2]
-		rotation_2 = -rot[3]
+		rotation_1 = -(180.0/math.pi)*rot[1]
+		rotation_2 = -(180.0/math.pi)*rot[2]
+		print rotation_2
 
 		if self.initialized:
 			if abs(translation_x - self.prev_translation[0]) < 0.3:
@@ -79,10 +81,10 @@ class Robot:
 			# 	self.prev_translation[1] = translation_y
 			# if abs(translation_z - self.prev_translation[2]) < 0.3:
 			# 	self.prev_translation[2] = translation_z
-			if abs(rotation_1 - self.prev_rotation[0]) < 0.5: #INSERT REAL NUMBER HERE
-				self.prev_rotation[0] = rotation_1
-			if abs(rotation_2 - self.prev_rotation[1]) < 0.5: #INSERT REAL NUMBER HERE
-				self.prev_rotation[1] = rotation_2
+			# if abs(rotation_1 - self.prev_rotation[0]) < 0.5: #INSERT REAL NUMBER HERE
+			# 	self.prev_rotation[0] = rotation_1
+			# if abs(int(rotation_2 - self.prev_rotation[1])) < 10: #INSERT REAL NUMBER HERE
+			# 	self.prev_rotation[1] = rotation_2
 		else:
 			self.prev_translation[0] = translation_x
 			# self.prev_translation[1] = translation_y
@@ -90,21 +92,28 @@ class Robot:
 			self.prev_rotation[0] = rotation_1
 			self.prev_rotation[1] = rotation_2
 			self.initialized = True
+		self.prev_rotation[1] = rotation_2
 
 	def follow(self):
 		"""Sends a cmd_vel to follower robots so they'll follow leader robot"""
 		angular_z = 0
 		twist = Twist()
 		print (0.5*self.prev_translation[0])
-		if self.prev_rotation[0] > 0.3 or self.prev_rotation[1] > 0.3: #rotation takes priority over translation
+		if self.prev_rotation[1] > 10: #rotation takes priority over translation
+			print "rotating"
 			self.prev_translation[0] = 0
-			angular_z = prev_rotation[1]
+			angular_z = self.prev_rotation[1]
 		if abs(1-self.prev_translation[0]) < 0.1: #so we're operating over a range
 			self.prev_translation[0] = 0
+		
+		print "TRANSLATE MOVE: ", 0.5*self.prev_translation[0]
+		print "ANGULAR MOVE: ", 0.2*angular_z
 		twist.linear.x = 0.5*self.prev_translation[0]; twist.linear.y = 0; twist.linear.z = 0 #basically we move on 2 axis, x-linear, z-angular
 		twist.angular.x = 0; twist.angular.y = 0; twist.angular.z = 0.1*angular_z
-		#pub.publish(twist)
+		pub.publish(twist)
 
+
+		#if we want to average stuff
 		# if self.count < 5:
 		# 	self.translation_x.append(-1 - trans[0])
 		# 	self.count += 1
@@ -123,14 +132,17 @@ def listener():
 	rate = rospy.Rate(5.0)
 	while not rospy.is_shutdown():
 		try:
-			(trans,rot) = listener.lookupTransform('/world', '/follower/base_link', rospy.Time(0))
-			#(trans,rot) = listener.lookupTransform('/leader/base_link', '/follower/base_link', rospy.Time(0))
+			#(trans,rot) = listener.lookupTransform('/world', '/follower/base_link', rospy.Time(0))
+			(trans,rot) = listener.lookupTransform('/leader/base_link', '/follower/base_link', rospy.Time(0))
+			angles = euler_from_quaternion(rot)
+        	
 			print('-------------------------------------------------------------')
 			print('TRANSLATION', trans)
-			print('ROTATION:', rot)
+			print 'ROTATION:',[(180.0/math.pi)*i for i in angles]
+			#print('ROTATION:', rot)
 			print('-------------------------------------------------------------')
-			follower.scrubinputs(trans, rot)
-			follower.follow(trans, rot)
+			follower.scrubinputs(trans, angles)
+			follower.follow()
 			rate.sleep()
 
 		except (tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException):
