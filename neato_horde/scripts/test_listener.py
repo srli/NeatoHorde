@@ -17,7 +17,7 @@ if __name__ == '__main__':
     rate = rospy.Rate(10.0)
     while not rospy.is_shutdown():
         try:
-            (trans,rot) = listener.lookupTransform('/oscar/base_link', '/bigbird/base_link', rospy.Time(0))
+            (trans,rot) = listener.lookupTransform('/world', '/follower/base_link', rospy.Time(0))
             # (trans2, rot2) = listener.lookupTransform('/bigbird/odom', '/oscar/odom', rospy.Time(0))
         except (tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException):
             continue
