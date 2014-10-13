@@ -39,12 +39,11 @@ class Robot:
 		############################################################################################################################
 		# I suspect that this broadcaster isn't actually necessary, since we declare the odom -> world transforms in the launch -- but who knows
 		############################################################################################################################
-
-		# self.tf_broadcaster.sendTransform((self.x, self.y, msg.pose.pose.position.z),
-  #                    tf.transformations.quaternion_from_euler(0, 0, msg.pose.pose.orientation.z),
-  #                    rospy.Time.now(),
-  #                    '{}/odom'.format(self.name),
-  #                    '/world') 
+		self.tf_broadcaster.sendTransform((self.x, self.y, msg.pose.pose.position.z),
+                     tf.transformations.quaternion_from_euler(0, 0, msg.pose.pose.orientation.z),
+                     rospy.Time.now(),
+                     '{}/odom'.format(self.name),
+                     '/world') 
 
 	def listen_to_pose(self):
 		"""Listens to transform between /world and /base_link"""
@@ -64,33 +63,54 @@ class Robot:
 		# print temp_pose
 		print("==============================")
 
+	def follow(self, trans, rot):
+		"""Sends a cmd_vel to follower robots so they'll follow leader robot"""
+		translation_x = trans[0]
+		translation_y = trans[1]
+		translation_z = trans[2]
+
+		rotation_1 = rot[2]
+		rotation_2 = rot[3]
+
+		twist = Twist()
+		twist.linear.x = 0.05*translation_x; twist.linear.y = 0; twist.linear.z = 0
+		twist.angular.x = 0; twist.angular.y = 0; twist.angular.z = 0
+		pub.publish(twist)
+
 def listener():
 	listener = tf.TransformListener()
 
 	rate = rospy.Rate(5.0)
 	while not rospy.is_shutdown():
 		try:
-			(trans,rot) = listener.lookupTransform('/world', '/follower/base_link', rospy.Time(0))
+			#(trans,rot) = listener.lookupTransform('/world', '/follower/base_link', rospy.Time(0))
+			(trans,rot) = listener.lookupTransform('/leader/base_link', '/follower/base_link', rospy.Time(0))
+			print('-------------------------------------------------------------')
+			print('TRANSLATION', trans)
+			print('ROTATION:', rot)
+			print('-------------------------------------------------------------')
+			follower.follow(trans, rot)
+			rate.sleep()
+
 		except (tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException):
 			continue
 
-		print('-------------------------------------------------------------')
-		print('TRANSLATION', trans)
-		print('ROTATION:', rot)
-		print('-------------------------------------------------------------')
-
-		rate.sleep()
+		finally:
+			twist = Twist()
+			twist.linear.x = 0; twist.linear.y = 0; twist.linear.z = 0
+			twist.angular.x = 0; twist.angular.y = 0; twist.angular.z = 0
+			pub.publish(twist)
 
 
 if __name__ == '__main__':
 	# Instantiates one instance of Robot class for each Neato
 	leader = Robot('leader')
 	follower = Robot('follower')
-
 	rospy.init_node('test_broadcaster')
 	print('TEST RUNNING')
 	rospy.Subscriber('follower/odom', Odometry, follower.broadcast_pose)
-
+	rospy.Subscriber('leader/odom', Odometry, leader.broadcast_pose)
+	pub = rospy.Publisher('/follower/cmd_vel', Twist, queue_size=10)
 	# Because we want to continually be listening, even when we aren't moving 	
 	listener()
 	# follower.listen_to_pose()
