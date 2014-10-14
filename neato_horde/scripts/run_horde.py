@@ -10,6 +10,9 @@ import math
 import numpy as np
 
 class Robot:
+	"""
+
+class Robot:
 	"""Neato robot class -- [insert better comment here]"""
 	def __init__(self, name):
 		self.name = name
