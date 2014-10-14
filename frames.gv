@@ -1,7 +1,0 @@
-digraph G {
-"world" -> "leader/odom"[label="Broadcaster: /leader/odom_to_world\nAverage rate: 20.146 Hz\nMost recent transform: 1413180135.285 \nBuffer length: 4.914 sec\n"];
-"leader/base_link" -> "leader/base_laser_link"[label="Broadcaster: /leader/laser_to_base\nAverage rate: 20.145 Hz\nMost recent transform: 1413180135.292 \nBuffer length: 4.914 sec\n"];
-"leader/odom" -> "leader/base_link"[label="Broadcaster: /leader/neato\nAverage rate: 5.217 Hz\nMost recent transform: 1413180135.002 \nBuffer length: 4.600 sec\n"];
-"follower/base_link" -> "follower/base_laser_link"[label="Broadcaster: /follower/laser_to_base\nAverage rate: 20.145 Hz\nMost recent transform: 1413180135.292 \nBuffer length: 4.914 sec\n"];
-"world" -> "follower/odom"[label="Broadcaster: /follower/odom_to_world\nAverage rate: 20.148 Hz\nMost recent transform: 1413180135.269 \nBuffer length: 4.864 sec\n"];
-}
