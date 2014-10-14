@@ -1,5 +1,6 @@
 NeatoHorde
 ==========
+Video: http://youtu.be/TcBuoQ0Napw
 
 All the neatos!!!
 Scalable multiagent robotics project.
