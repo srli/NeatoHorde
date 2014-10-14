@@ -67,30 +67,25 @@ class Robot:
 		# print temp_pose
 		print("==============================")
 
+	def correctdrift(self, translation_y):
+		print "CORRECT Y AXIS DRIFT PLEASE"
+
 	def scrubinputs(self, trans, rot):
 		translation_x = -0.9 - trans[0]
-		#translation_y = trans[1]
-		#translation_z = trans[2]
-		#rotation_1 = -np.degrees(rot[1])
+		translation_y = trans[1]
 		rotation_z = np.degrees(rot[2])
+		print "translation x", translation_x
 		print "rotation Z", rotation_z
 
 		if self.initialized:
 			if abs(translation_x - self.prev_translation[0]) < 0.3:
 				self.prev_translation[0] = translation_x
-			# if abs(translation_y - self.prev_translation[1]) < 0.3:
-			# 	self.prev_translation[1] = translation_y
-			# if abs(translation_z - self.prev_translation[2]) < 0.3:
-			# 	self.prev_translation[2] = translation_z
-			# if abs(rotation_1 - self.prev_rotation[0]) < 0.5: #INSERT REAL NUMBER HERE
-			# 	self.prev_rotation[0] = rotation_1
-			# if abs(int(rotation_2 - self.prev_rotation[1])) < 10: #INSERT REAL NUMBER HERE
-			# 	self.prev_rotation[1] = rotation_2
+			if abs(int(rotation_z - self.prev_rotation[2])) < 1:
+				self.prev_rotation[2] = rotation_z
+			if abs(translation_y) > 0.5:
+				self.correctdrift(translation_y)
 		else:
 			self.prev_translation[0] = translation_x
-			# self.prev_translation[1] = translation_y
-			# self.prev_translation[2] = translation_z
-			#self.prev_rotation[0] = rotation_1
 			self.prev_rotation[2] = rotation_z
 			self.initialized = True
 		self.prev_rotation[2] = rotation_z
@@ -99,12 +94,13 @@ class Robot:
 		"""Sends a cmd_vel to follower robots so they'll follow leader robot"""
 		angular_z = 0
 		twist = Twist()
-		print (0.5*self.prev_translation[0])
+		print ("Translation distance: ", self.prev_translation[0])
+		print ("Testing crap: ", 1 - abs(self.prev_translation[0]))
 		if abs(self.prev_rotation[2]) > 2: #rotation takes priority over translation
 			print "rotating"
 			#self.prev_translation[0] = 0
 			angular_z = self.prev_rotation[2]
-		if abs(1-self.prev_translation[0]) < 0.1: #so we're operating over a range
+		if 1 - abs(self.prev_translation[0]) < 0.1: #so we're operating over a range
 			self.prev_translation[0] = 0
 		
 		print "TRANSLATE MOVE: ", 0.5*self.prev_translation[0]
@@ -113,19 +109,6 @@ class Robot:
 		twist.angular.x = 0; twist.angular.y = 0; twist.angular.z = -0.01*angular_z
 		pub.publish(twist)
 
-
-		#if we want to average stuff
-		# if self.count < 5:
-		# 	self.translation_x.append(-1 - trans[0])
-		# 	self.count += 1
-		# elif self.count == 5:
-		# 	x_move = sum(self.translation_x)/len(self.translation_x)
-		# 	twist = Twist()
-		# 	twist.linear.x = 0.5*x_move; twist.linear.y = 0; twist.linear.z = 0
-		# 	twist.angular.x = 0; twist.angular.y = 0; twist.angular.z = 0
-		# 	pub.publish(twist)
-		# 	self.translation_x = []
-		# 	self.count = 0
 
 def listener():
 	listener = tf.TransformListener()
@@ -146,13 +129,11 @@ def listener():
 			trans = trans_f - trans_l
 			angles = angles_f - angles_l
 
-        	# trans = np.subtract(trans_l,trans_f)
-        	# angles = np.subtract(angles_l,angles_f)
 			print('-------------------------------------------------------------')
 			print('TRANSLATION', trans)
 			print 'ROTATION:',[(180.0/math.pi)*i for i in angles]
-			#print('ROTATION:', rot)
 			print('-------------------------------------------------------------')
+
 			follower.scrubinputs(trans, angles)
 			follower.follow()
 			rate.sleep()
@@ -173,14 +154,12 @@ if __name__ == '__main__':
 	follower = Robot('follower')
 	rospy.init_node('test_broadcaster')
 	print('TEST RUNNING')
-	rospy.Subscriber('follower/odom', Odometry, follower.broadcast_pose)
-	rospy.Subscriber('leader/odom', Odometry, leader.broadcast_pose)
+	# rospy.Subscriber('follower/odom', Odometry, follower.broadcast_pose)
+	# rospy.Subscriber('leader/odom', Odometry, leader.broadcast_pose)
 	pub = rospy.Publisher('/follower/cmd_vel', Twist, queue_size=10)
 	# Because we want to continually be listening, even when we aren't moving 	
 	listener()
 	# follower.listen_to_pose()
-
-
 	rospy.spin() 
 
 
